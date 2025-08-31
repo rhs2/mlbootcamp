@@ -202,9 +202,29 @@ select student.first_name, student.last_name, student.age, department.department
 natural join department;
 
 
+#mysql stored procedure---> explanation
+#we can create a like functions in stored procedure and can call that store procedure to overcome writting the same query again and again
 
 
+use customer;
+select * from student;
+#we have create a store procedure name get_student_info now we can call that funtions
+call get_student_info;
 
+#we can also make a parameter based function to call it 
+#we can adjust the parameter as get_student_info(in age int)--> in column_name data_type
+call get_student_info(31);
+
+#why is the main use of output parameter 
+#use the output parameter 
+call get_student_info_out(@records);
+select @records as Totalrecords;
+
+
+#combine in and out lets see
+
+call student_info_in_out(@record, 31);
+select @record as Totalrecord;
 
 
 

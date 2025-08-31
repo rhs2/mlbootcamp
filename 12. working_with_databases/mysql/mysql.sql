@@ -95,6 +95,118 @@ alter table customer_info modify dob year;
 # <!-- #26. alter table to drop column
 alter table customer_info drop column dob;
 
+show databases;
+
+#26. discuss about views
+#views---> view is like a virtual table based on the result set of an sql query.
+
+use customer;
+
+#creating a new table name student
+
+create table student(
+student_id int auto_increment,
+first_name varchar(25) not null,
+last_name varchar(25) not null,
+age int,
+primary key(student_id)
+);
+select * from student;
+
+#inserting values in the student tables
+insert into student values (1, 'sio', '2', 31),
+(2, 'rhs','6',30),(3,'rhs','2',40); 
+
+create table department(
+student_id int auto_increment,
+department_name varchar(25) not null,
+foreign key(student_id) references student(student_id)
+);
+desc department;
+insert into department values(1, 'computer science'),
+(2, 'electronics'), (3, 'mechanics');
+
+select * from department;
+select * from student;
+
+#involves inner join 
+#create views 
+select first_name, last_name, age from student inner join department using (student_id);
+
+#create view on that particular query #it will be virtual table 
+create view student_info as select first_name, last_name, age from student inner join department using (student_id);
+
+select * from student_info;
+
+#dropping views
+drop view student_info;
+
+#can we write any kind query and write it as view? --> no,
+#agg function, union, update statement, groupby, left outer join, right outer join, sub query not work on views
+
+#for inner join it will work
+
+
+#27. sql join
+/* SQL JOINS
+1. inner join
+2. left join
+3. right join
+4. full join
+5. natural join
+6. cross join
+*/
+
+select * from student;
+
+insert into student values(4, 'soad','r', 20);
+select * from department;
+insert into department values(4, 'english');
+
+##1. inner join
+#inner join takes only those which ever matching records it has 
+select student.first_name, student.last_name, student.age, department.department_name from student inner join department 
+on student.student_id = department.student_id;
+
+##left join
+#it will priorities the left table even if in the right hand side there is not value then it will give null
+select student.first_name, student.last_name, student.age, department.department_name from student left join department 
+on student.student_id = department.student_id;
+
+#right join
+#here the focus will go on the right hand side of the table
+select student.first_name, student.last_name, student.age, department.department_name from student right join department
+on student.student_id = department.student_id;
+
+#for the insert we will have to focus on the primary key, otherwise child row for foreign key will be effected if we try to insert more values than primary key in the foreign key
+
+##give priority on the both the table
+#full outer join--> focus on the left join, focus on the right join then combine by union
+#for implementing the full outer join we need to take right join and left join and in between we need to combine them by union
+
+select student.first_name, student.last_name, student.age, department.department_name from student left join department 
+on student.student_id = department.student_id
+union
+select student.first_name, student.last_name, student.age, department.department_name from student right join department
+on student.student_id = department.student_id;
+
+#5. cross join--> cross join will combine all the possible row and gives the outcome
+
+select student.first_name, student.last_name, student.age, department.department_name from student 
+cross join department;
+
+delete from department where student_id =4;
+
+#6 natural join---> it will give us the result of row based on the real value without giving any null values
+select student.first_name, student.last_name, student.age, department.department_name from student 
+natural join department;
+
+
+
+
+
+
+
 
 
 

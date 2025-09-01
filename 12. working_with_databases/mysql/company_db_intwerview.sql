@@ -98,7 +98,72 @@ insert into Designation values
 (0004, 'Senior HR MANAGER','2025-01-02 09:00:00');
 
 SELECT * FROM Designation;
+#SQL INTERVIEW QUESTION
+use Company;
+##EASY QUERY
+#1. Write a sql query to retrieve all details where first name from employee in the table starts with 's'
+select * from Employee where first_name like 's%';
 
+#2. #1. Write a sql query to retrieve all details where first name from employee in the table ends with 'o'
+select * from Employee where first_name like '%o';
+#this '% means before % any letter means it will start with that letter and ends with anything but after % it means the words ends with that letter and in between %s% it means s is inside the words '
+
+##2. Write a sql query to print all details of the employees whose salary between 10000 to 60000
+
+select * from Employee where salary between 10000 and 60000;
+#query 2 
+select * from Employee where (salary> 10000 and salary < 60000);
+
+#inner query
+#get first name and last name combine
+select concat(first_name ,' ',last_name) as Emp_name, salary from Employee
+where empid in 
+(select empid from Employee where salary between 10000 and 60000); 
+
+##3. SQL query to retrieve details of the employee who have joined on a date
+#MAY 2024
+select * from designation;
+select * from Employee where year(joining_date) = '2024' and month(joining_date)= '05'; 
+
+##4. sql query to fetch number of employee in every department
+select count(*), department as department from Employee group by department;
+
+#5.sql query print details of the employee who are also senior hr manager
+select Employee.first_name from Employee 
+inner join designation
+on Employee.empid = designation.emp_ref_id 
+and designation.designation = 'Senior HR Manager';
+
+#we can write in keyword instead of using = and for in we need to wrap that in('Senior HR Manager')
+
+##6. sql query to clone a new table from another table
+CREATE Table rhs like Employee; #without information
+select * from rhs;
+
+#this is the way i can clone a entire tables
+Create table sio as
+select * from Employee;
+select * from sio;
+
+
+#7. SQL query to show up top n salary of a employee
+select * from Employee order by salary desc limit 4;
+
+#8. sql query to determine the 4th highest salary
+-- select * from Employee order by salary asc limit 4;
+-- select * from Employee order by salary desc limit (n-1,1);
+select * from Employee order by salary desc limit 4,1;
+
+## 9. sql query to determine the 6th highest salary without using limit
+
+SELECT salary
+FROM (
+    SELECT salary, ROW_NUMBER() OVER (ORDER BY salary DESC) AS row_num
+    FROM Employee
+) t
+WHERE row_num = 6;
+
+select * from Employee;
 
 
 

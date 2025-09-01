@@ -226,9 +226,7 @@ select @records as Totalrecords;
 call student_info_in_out(@record, 31);
 select @record as Totalrecord;
 
-
-
-
+ 
 
 
 
